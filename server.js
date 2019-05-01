@@ -4,8 +4,23 @@ const session = require("express-session");
 const app = express();
 const port = process.env.PORT || 2000;
 
+app.use(
+  session({
+    secret: "secreto!",
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
 app.get("/", (req, res) => {
-  res.send("hello friend");
+  req.session.cuenta = req.session.cuenta
+    ? req.session.cuenta + 1
+    : 1;
+  res.send(
+    `hello friend. has visitado esta pagina ${
+      req.session.cuenta
+    } veces`
+  );
 });
 
 app.listen(port, () =>
